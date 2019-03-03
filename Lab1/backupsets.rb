@@ -1,36 +1,3 @@
-require 'json'
-require 'ripl'
-require './sets'
-
-def initdb
-  database = {}
-  database["array"]=[]
-  database["hash"]=[]
-  database["set"]=[]
-  database
-end
-
-def commit_to_file
-  File.open('./db', 'wb') {|f| f.write($db.to_json)}
-end
-
-def load_string_from_file
-  a = ""
-  if File.exist?('./db') && !File.zero?('./db')
-    a = File.read('./db')
-  end
-  a
-end
-
-def load_from_file
-  $db = JSON.parse(load_string_from_file)
-end
-
-def showdb
-  puts $db
-end
-
-$db = load_string_from_file.empty? ? initdb : load_from_file
 
 def carr(*args)
   unless args.empty?
@@ -85,6 +52,7 @@ def cset(*args)
     $db["set"].push(Sets.set_construct(*args))
   end
 end
+
 def rset(index)
   puts $db["set"][index]
 rescue
@@ -103,12 +71,28 @@ rescue
   warn "cannot delete this set"
 end
 
-Ripl.start
-module Ripl
-  module RedError
-    def format_error(error)
-      "\e[31m#{super}\e[m"
-    end
-  end
+def initdb
+  database = {}
+  database["array"]=[]
+  database["hash"]=[]
+  database["set"]=[]
+  database
 end
-Ripl::Shell.include Ripl::RedError
+def commit_to_file
+  File.open('./db', 'wb') {|f| f.write($db.to_json)}
+end
+
+def load_string_from_file
+  a = ""
+  if File.exist?('./db') && !File.zero?('./db')
+    a = File.read('./db')
+  end
+  a
+end
+
+def load_from_file
+  $db = JSON.parse(load_string_from_file)
+end
+def showdb
+  puts $db
+end
