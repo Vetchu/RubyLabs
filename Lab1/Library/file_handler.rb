@@ -1,6 +1,6 @@
 module FileHandler
 
-  def commit_to_file
+  def FileHandler.commit_to_file
     File.open('./db', 'wb') {|f| f.write($db.to_json)}
   end
 

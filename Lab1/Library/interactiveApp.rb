@@ -19,15 +19,17 @@ def book(title, authors, tags)
   book["tags"] = tags
   book
 end
+
 $db
+
 def setup
-  $db = FileHandler.load_string_from_file.empty? ? initdb : load_from_file
+  $db = FileHandler.load_string_from_file.empty? ? initdb : FileHandler.load_from_file
 end
 
 def insert_book(title, authors, tags)
   newbook = book(title, authors, tags)
   unless $db["titles"].key? title
-    $db["titles"][title]=newbook
+    $db["titles"][title] = newbook
   end
   for author in authors
     unless $db["authors"].key? author
@@ -44,24 +46,40 @@ def insert_book(title, authors, tags)
 end
 
 def search_by_title(title)
-  titleset = $db["titles"].keys
+  titleset = Set.new.add($db["titles"].keys)
   titleresult = Set.new
 
-  titleset = titleset.keep_if {|v| title =~ v}
+  # if titleset.kind_of?(Array)
+  titleset = titleset.keep_if {
+      |v| title =~ v
+  }
   for title in titleset
     titleresult.add($db["titles"][title])
   end
+  puts titleresult
+  # else
+  #   puts title
+  #
+  #   if title =~ titleset
+  #     titleresult = titleset
+  #   end
+  # end
   titleresult
 end
 
 def search_by_authors(authors)
   authorset = $db["authors"].keys
   authorresult = Set.new
-
-  for author in authors
-    authorset = authorset.keep_if {|v| author =~ v}
-  end
-  for author in authorset
+  if authors.kind_of?(Array)
+    for author in authors
+      authorset = authorset.keep_if {|v| author =~ v}
+    end
+    for author in authorset
+      for book in $db["authors"][author]
+        authorresult.add(book)
+      end
+    end
+  else
     for book in $db["authors"][author]
       authorresult.add(book)
     end
@@ -73,32 +91,63 @@ def search_by_tags(tags)
   tagset = $db["authors"].keys
   tagresult = Set.new
 
-  for tag in tags
-    tagset = tagset.keep_if {|v| tag =~ v}
-  end
+  if tags.kind_of?(Array)
+    for tag in tags
+      tagset = tagset.keep_if {|v| tag =~ v}
+    end
 
-  for tag in tags
-    for book in $db["tags"][tag]
-      tagresult.add(book)
+    for tag in tags
+      for book in $db["tags"][tag]
+        tagresult.add(book)
+      end
+    end
+  else
+    for book in $db["authors"][author]
+      authorresult.add(book)
     end
   end
   tagresult
 end
 
-def search(title, authors, tags)
-  titleresult=search_by_title(title)
-  authorresult=search_by_authors(authors)
-  tagresult=search_by_tags(tags)
+def string_to_regex(args)
+  newtable = Set.new
+  if args.kind_of?(Array)
+    for arg in args
+      newtable.add(/#{arg}/)
+    end
+  else
+    newtable.add(/#{args}/)
+  end
+  newtable
+end
 
-  titleresult & authorresult & tagresult
+
+def search(title, authors, tags)
+  results = Set.new
+  if title != nil
+    results.add(search_by_title(string_to_regex(title)))
+  end
+  unless authors.empty?
+    results.add(search_by_authors(string_to_regex(authors)))
+  end
+  unless tags.empty?
+    results.add(search_by_tags(string_to_regex(tags)))
+  end
+  puts results
+
+  results.delete(nil)
+  firstresult = results.to_a[0]
+
+  for result in results
+    firstresult = firstresult & result
+  end
+
+  firstresult
 end
 
 def handleArgs(*args)
 
-
 end
-
-
 
 if ARGV.empty?
   setup
