@@ -10,14 +10,6 @@ module Sets
     ary
   end
 
-  def Sets.array_remove(index)
-
-  end
-
-  def Sets.array_element_remove(arrindex, elindex)
-
-  end
-
   def Sets.hash_construct(*args)
     hash = {}
     for x in args
@@ -40,7 +32,20 @@ module Sets
     end
 
     tab = hash.fetch(key)
-    unless tab.include?value || tab.length > 1
+    unless tab.include? value || tab.length > 1
+      tab.push(value)
+    end
+  end
+
+  def Sets.person_insert(hash, key, value, secondhash)
+    unless hash.key? key
+      hash[key] = []
+    end
+
+    tab = hash.fetch(key)
+    if secondhash[value] != nil && secondhash[value].length < 1
+      raise("OSOBA " + value + " JEST JUZ ZAPISANA NA " + key)
+    elsif !(tab&.include? value)
       tab.push(value)
     end
   end
@@ -57,17 +62,18 @@ module Sets
       end
       puts name
     end
-
   end
 
-  def Sets.hash_getAll(hash, secondhash)
+  def Sets.hash_get_all(hash, secondhash)
     for key in hash.keys
       if key != nil
+        puts key
         Sets.hash_getbykey(hash, key, secondhash)
       end
     end
   end
 end
+
 
 def handleArgs(*args)
   hash = {}
@@ -79,26 +85,25 @@ def handleArgs(*args)
       if carr.length > 1
         Sets.hash_getbykey(hash, carr[1], secondhash)
       else
-        Sets.hash_getAll(hash, secondhash)
+        Sets.hash_get_all(hash, secondhash)
       end
     else
-      Sets.hash_insert(hash,carr[0],carr[1])
+      if carr.length > 2
+        Sets.hash_insert(secondhash, carr[1], carr[2])
+      end
+      Sets.person_insert(hash, carr[0], carr[1], secondhash)
 
       unless secondhash.key? carr[1]
         secondhash[carr[1]] = []
       end
-
-      if carr.length > 2
-        Sets.hash_insert(secondhash,carr[1],carr[2])
-      end
     end
-
   end
 end
 
-
-if ARGV.empty?
-  puts "argumenty?"
-else
-  handleArgs(*ARGV)
+if __FILE__ == $0
+  if ARGV.empty?
+    puts "argumenty?"
+  else
+    handleArgs(*ARGV)
+  end
 end

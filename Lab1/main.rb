@@ -10,7 +10,6 @@ def sum(arg1, arg2)
   arg1 = convert_string_number(arg1)
   arg2 = convert_string_number(arg2)
   var = arg1 + arg2;
-  return var;
 end
 
 def cant_convert
