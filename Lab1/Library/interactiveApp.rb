@@ -103,7 +103,7 @@ def search_by_tags(tags)
     end
   else
     for book in $db["authors"][author]
-      authorresult.add(book)
+      tagresult.add(book)
     end
   end
   tagresult

@@ -1,0 +1,1 @@
+# ruby -e 'hash={}; while(gets) do $_.split(" ").each { |word| size=word.length; hash[size]=(hash.key? size)? hash[size]+=1:1} end; puts "długosc\tilosc";hash.keys.each{|key|puts key.to_s+" \t"+hash[key].to_s}'

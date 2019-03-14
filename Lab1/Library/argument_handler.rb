@@ -58,11 +58,16 @@ DIR: The directory in which to issue the greeting.
         puts result["title"] + result["authors"] + result["tags"]
       }
     else
-      puts results
-      results = results.to_a[0]
-      puts results["title"] + results["authors"] + results["tags"]
+      if results.empty?
+        puts "RESULTS: EMPTY"
+      else
+        puts results
+        results = results.to_a[0]
+        puts results["title"] + results["authors"] + results["tags"]
+      end
+
     end
-    search_title = NULL;
+    search_title = nil;
     search_authors = Set.new
     search_tags = Set.new
   else
