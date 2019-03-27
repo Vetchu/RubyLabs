@@ -1,6 +1,15 @@
 require '/home/vetch/.gem/ruby/2.6.0/gems/rdoc-6.1.1/lib/rdoc.rb'
 require '/home/vetch/.gem/ruby/2.6.0/gems/ansi-1.5.0/lib/ansi.rb'
+# Wrapper class of methods required by program
 class Dlugosci
+  # Counts length of words and updates hashes
+  #
+  # @param hash [Hash]
+  #        hash to insert values to
+  # @param allwords [ String]
+  #        string of words to count
+  # @return [Hash]
+  #         resulting hash
   def self.count_occurencies(hash, allwords)
     namearr = allwords.split(" ")
     for word in namearr
@@ -14,6 +23,10 @@ class Dlugosci
     hash
   end
 
+  # Prints everything in the hash
+  #
+  # @param hash [Hash]
+  #        hash with occurencies
   def self.printdb(hash)
     puts "dlugosc\tilosc"
     for key in hash.keys
@@ -21,6 +34,10 @@ class Dlugosci
     end
   end
 
+  # Reads lines until interrupt happens
+  #
+  # @return [Hash]
+  #         resulting hash after input finishes
   def self.readline
     hash = {}
     allwords = ""

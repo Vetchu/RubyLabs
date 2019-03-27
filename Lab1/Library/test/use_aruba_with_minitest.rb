@@ -1,6 +1,6 @@
 $LOAD_PATH.unshift File.expand_path('../test', __FILE__)
 
-require 'test_helper'
+load './test_helper.rb'
 require 'minitest/autorun'
 require 'aruba/api'
 
@@ -9,7 +9,11 @@ class FirstRun < Minitest::Test
 
   def setup
     aruba_setup
-    getting_started_with_aruba
+    @result1 = run_command("ruby argument_handler.rb",)
+  end
+
+  def testwork
+
   end
 
   def getting_started_with_aruba

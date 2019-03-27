@@ -53,21 +53,23 @@ DIR: The directory in which to issue the greeting.
 
   when '--search'
     results = search(search_title, search_authors, search_tags)
+
     if results.kind_of?(Array)
       results.each {|result|
-        puts result["title"] + result["authors"] + result["tags"]
+        puts result["title"].to_s + result["authors"].to_s + result["tags"].to_s
       }
     else
+
       if results.empty?
         puts "RESULTS: EMPTY"
       else
         puts results
         results = results.to_a[0]
-        puts results["title"] + results["authors"] + results["tags"]
+        puts results["title"].to_s + results["authors"].to_s + results["tags"].to_s
       end
 
     end
-    search_title = nil;
+    search_title = nil
     search_authors = Set.new
     search_tags = Set.new
   else

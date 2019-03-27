@@ -5,7 +5,7 @@ load 'dlugosci.rb'
 class TestSum < MiniTest::Test
   def setup
     hash = {}
-    @result1 = count_occurencies(hash, "abcd efgh asdfads")
+    @result1 = Dlugosci.count_occurencies(hash, "abcd efgh asdfads")
   end
 
   def test_count

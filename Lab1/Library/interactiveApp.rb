@@ -14,7 +14,7 @@ end
 
 def book(title, authors, tags)
   book = {}
-  book["title"] = title;
+  book["title"] = title
   book["authors"] = authors
   book["tags"] = tags
   book
@@ -45,78 +45,106 @@ def insert_book(title, authors, tags)
   end
 end
 
-def search_by_title(title)
-  titleset = Set.new.add($db["titles"].keys)
+def search_by_title(titlesett)
+  title = titlesett[0]
+  titleset = Set.new
+  for key in $db["titles"].keys
+    titleset.add(key)
+  end
   titleresult = Set.new
-
-  # if titleset.kind_of?(Array)
   titleset = titleset.keep_if {
-      |v| title =~ v
+      |v| /#{title}/ =~ v
   }
+
   for title in titleset
     titleresult.add($db["titles"][title])
   end
-  puts titleresult
-  # else
-  #   puts title
-  #
-  #   if title =~ titleset
-  #     titleresult = titleset
-  #   end
-  # end
+
   titleresult
 end
 
 def search_by_authors(authors)
-  authorset = $db["authors"].keys
+  authorset = Set.new
+  for key in $db["authors"].keys
+    authorset.add(key)
+  end
+
   authorresult = Set.new
+
   if authors.kind_of?(Array)
     for author in authors
-      authorset = authorset.keep_if {|v| author =~ v}
+      authorset = authorset.keep_if {|v| /#{author}/ =~ v}
     end
     for author in authorset
-      for book in $db["authors"][author]
-        authorresult.add(book)
+      if $db["authors"][author].kind_of? Array
+        for book in $db["authors"][author]
+          authorresult.add(book)
+        end
+      else
+        authorresult.add($db["authors"][author])
       end
     end
   else
-    for book in $db["authors"][author]
-      authorresult.add(book)
+    authorset = authorset.keep_if {|v| /#{authors}/ =~ v}
+
+    for author in authorset
+      if $db["authors"][author].kind_of? Array
+        for book in $db["authors"][author]
+          authorresult.add(book)
+        end
+      else
+        authorresult.add($db["authors"][author])
+      end
     end
   end
   authorresult
 end
 
 def search_by_tags(tags)
-  tagset = $db["authors"].keys
+  tagset = Set.new
+  for key in $db["tags"].keys
+    tagset.add(key)
+  end
   tagresult = Set.new
 
   if tags.kind_of?(Array)
     for tag in tags
-      tagset = tagset.keep_if {|v| tag =~ v}
+      tagset = tagset.keep_if {|v| /#{tag}/ =~ v}
     end
 
     for tag in tags
-      for book in $db["tags"][tag]
-        tagresult.add(book)
+      if $db["tags"][tag].kind_of? Array
+        for book in $db["tags"][tag]
+          tagresult.add(book)
+        end
+      else
+        tagresult.add($db["tags"][tag])
       end
     end
   else
-    for book in $db["authors"][author]
-      tagresult.add(book)
+    tagset = tagset.keep_if {|v| /#{tags}/ =~ v}
+
+    for tag in tagset
+      if $db["tags"][tag].kind_of? Array
+        for book in $db["tags"][tag]
+          tagresult.add(book)
+        end
+      else
+        tagresult.add($db["tags"][tag])
+      end
     end
   end
   tagresult
 end
 
 def string_to_regex(args)
-  newtable = Set.new
+  newtable = []
   if args.kind_of?(Array)
     for arg in args
-      newtable.add(/#{arg}/)
+      newtable.push(arg)
     end
   else
-    newtable.add(/#{args}/)
+    newtable.push(args)
   end
   newtable
 end
@@ -124,23 +152,31 @@ end
 
 def search(title, authors, tags)
   results = Set.new
+  firstresult = nil
   if title != nil
     results.add(search_by_title(string_to_regex(title)))
+    firstresult = search_by_title(string_to_regex(title))
   end
-  unless authors.empty?
+  unless authors == nil || authors.empty?
     results.add(search_by_authors(string_to_regex(authors)))
+    if firstresult == nil
+      firstresult = search_by_authors(string_to_regex(authors))
+    end
   end
-  unless tags.empty?
+  unless tags == nil || tags.empty?
     results.add(search_by_tags(string_to_regex(tags)))
+    if firstresult == nil
+      firstresult = search_by_tags(string_to_regex(tags))
+    end
   end
+
+  results.keep_if {|result| result.to_a[0] != nil}
   puts results
-
-  results.delete(nil)
-  firstresult = results.to_a[0]
-
   for result in results
     firstresult = firstresult & result
   end
+
+  puts firstresult
 
   firstresult
 end

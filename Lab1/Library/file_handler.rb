@@ -15,6 +15,7 @@ module FileHandler
   def FileHandler.load_from_file
     $db = JSON.parse(load_string_from_file)
   end
+
   def showdb
     puts $db
   end

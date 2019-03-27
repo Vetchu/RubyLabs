@@ -43,14 +43,19 @@ module Sets
     end
 
     tab = hash.fetch(key)
-    if secondhash[value] != nil && secondhash[value].length < 1
-      raise("OSOBA " + value + " JEST JUZ ZAPISANA NA " + key)
+    if (secondhash[value] != nil && secondhash[value].length < 1) || tab.length == 2
+      #raise("OSOBA " + value + " JEST JUZ ZAPISANA NA " + key)
+      raise(StandardError)
     elsif !(tab&.include? value)
       tab.push(value)
     end
+
+    unless secondhash.key? value
+      secondhash[value] = []
+    end
   end
 
-  def Sets.hash_getbykey(hash, key, secondhash)
+  def Sets.hash_get_by_key(hash, key, secondhash)
     if hash.key? key
       a = hash.fetch(key)
     end
@@ -68,7 +73,7 @@ module Sets
     for key in hash.keys
       if key != nil
         puts key
-        Sets.hash_getbykey(hash, key, secondhash)
+        Sets.hash_get_by_key(hash, key, secondhash)
       end
     end
   end
@@ -83,7 +88,7 @@ def handleArgs(*args)
     carr = x.split(':')
     if carr[0] == '--wypisz'
       if carr.length > 1
-        Sets.hash_getbykey(hash, carr[1], secondhash)
+        Sets.hash_get_by_key(hash, carr[1], secondhash)
       else
         Sets.hash_get_all(hash, secondhash)
       end
@@ -93,11 +98,10 @@ def handleArgs(*args)
       end
       Sets.person_insert(hash, carr[0], carr[1], secondhash)
 
-      unless secondhash.key? carr[1]
-        secondhash[carr[1]] = []
-      end
+
     end
   end
+  [hash, secondhash]
 end
 
 if __FILE__ == $0
