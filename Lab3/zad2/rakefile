@@ -1,0 +1,21 @@
+require 'rubygems'
+require 'rspec/core/rake_task'
+require 'yard/rake/yardoc_task.rb'
+
+task :test => [:spec]
+
+task :default do
+  #test
+  ruby "skrypt2.rb"
+end
+
+task :doc do
+  YARD::Rake::YardocTask.new do |t|
+    t.files = 'skrypt2.rb'
+  end
+end
+
+RSpec::Core::RakeTask.new do |t|
+  t.pattern = 'skrypt2.rb'
+  #t.rspec_opts << '--format specdoc'
+end
