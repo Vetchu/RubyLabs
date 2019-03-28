@@ -1,0 +1,25 @@
+@ARTICLE{Aamport,
+  author = {L[eslie] A. Aamport},
+  title = {The Gnats and Gnus Document Preparation System},
+  journal = {\mbox{G-Animal's} Journal},
+  year = 1986,
+}
+
+@ARTICLE{Bailey,
+  author = "D. H. Bailey and P. N. Swarztrauber",
+  title = "The fractional {F}ourier transform and applications",
+  journal = "SIAM Rev.",
+  volume = 33,
+  number = 3,
+  pages = "389--404",
+  year = 1991
+}
+
+@ARTICLE{Bay1,
+  title = "An iterative method for the {H}elmholtz equation",
+  author = "A. Bayliss and C. I. Goldstein and E. Turkel",
+  journal = "J. Comp. Phys.",
+  volume = 49,
+  pages = "443--457",
+  year = 1983
+}
