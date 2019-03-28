@@ -61,5 +61,8 @@ else
     it 'displays a message' do
       expect {@odbiorca.komunikat}.to output(/Wywołano metodę instancyjną/).to_stdout
     end
+    it 'creates table' do
+      expect(@odbiorca.utworz_tablice(1, 2)).to eql([1])
+    end
   end # RSpec.describe
 end # if $PROGRAM_NAME == __FILE__
