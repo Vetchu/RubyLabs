@@ -1,4 +1,4 @@
-require ".mygem/DeanerySystem.rb"
+require "mygem/DeanerySystem.rb"
 
 module Mygem
 
