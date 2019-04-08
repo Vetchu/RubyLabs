@@ -13,31 +13,31 @@ class Commands
     end
   end
 
-  def update_student(student, name, surname, external)
+  def update_student(name1, surname1, name, surname, external)
     if external
-      $db.student_handler.update student, DeanerySystem::ExternalStudent.new(name, surname)
+      $db.student_handler.update DeanerySystem::Student(name1, surname1), DeanerySystem::ExternalStudent.new(name, surname)
     else
-      $db.student_handler.update student, DeanerySystem::FullTimeStudent.new(name, surname)
+      $db.student_handler.update DeanerySystem::Student(name1, surname1), DeanerySystem::FullTimeStudent.new(name, surname)
     end
   end
 
-  def delete_student(student)
-    $db.student_handler.delete student
+  def delete_student(name, surname)
+    $db.student_handler.delete DeanerySystem::Student.new(name, surname)
   end
 
-  def assign_grade(student, grade)
-    $db.score_handler.insert student, grade
+  def assign_grade(name, surname, score, type)
+    $db.score_handler.assign DeanerySystem::Student.new(name, surname), Score.new(score, type)
   end
 
-  def update_grade(student, grade, score, type)
-    $db.score_handler.update student, student, grade, Score.new(score, type)
+  def update_grade(name, surname, score1, type1, score, type)
+    $db.score_handler.update DeanerySystem::Student.new(name, surname), DeanerySystem::Student(name, surname), Score.new(score1, type1), Score.new(score, type)
   end
 
-  def remove_grade(grade)
-    $db.score_handler.remove grade
+  def remove_grade(name, surname, score, type)
+    $db.score_handler.delete DeanerySystem::Student.new(name, surname), Score.new(score, type)
   end
 
-  def get_all_students_and_grades
+  def get_all_students
     $db.student_handler.get_all {|student| $db.score_handler.grades(student) {|score| student.add score[1], score[2], "NEW"}}
   end
 

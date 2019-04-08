@@ -23,11 +23,12 @@ class Student_Handler
 
   def update (student, new_student)
     student = student.get_info
+    new_student = new_student.get_info
 
-    @db.execute("UPDATE students SET (first_name, last_name, external)
-            VALUES (?, ?, ?) WHERE id=? ", [new_student[1], new_student[2], new_student[3], student[0]])
-  rescue
-    puts "cannot update student " + student[0]
+    @db.execute("UPDATE students SET id=?, first_name=?, last_name=?, is_external=?
+                 WHERE id=?", new_student, student[0])
+      # rescue
+      #  puts "cannot update student " + student[0] +new_student.to_s
   end
 
   def delete (student)
@@ -39,7 +40,7 @@ class Student_Handler
 
   def get_all
     rows = @db.execute("SELECT * FROM students").each {|row|
-      puts row
+      #puts row
       (!row[3].nil? && row[3] == 0) ?
           DeanerySystem::FullTimeStudent.new(row[1], row[2]) :
           DeanerySystem::ExternalStudent.new(row[1], row[2])
