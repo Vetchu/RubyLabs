@@ -13,7 +13,7 @@ class ScoreHandler
     SQL
   end
 
-  def insert (student, grade)
+  def assign (student, grade)
     @db.execute("INSERT INTO grades (score, type, studentid)
             VALUES (?, ?, ?)", grade.score, grade.type, student.id)
   end
@@ -30,7 +30,7 @@ class ScoreHandler
     puts "cannot delete student grade" + +grade.to_s
   end
 
-  def delete_all (student, grade)
+  def delete_all (student)
     @db.execute("DELETE FROM grades WHERE studentid=?", student.id)
   rescue
     puts "cannot delete students grades" + +student.to_s

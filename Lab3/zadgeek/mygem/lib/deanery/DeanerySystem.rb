@@ -33,9 +33,6 @@ class DeanerySystem
     @scores
 
     def initialize(name, surname)
-      unless $db
-        $db = SQL_Handler.new("test")
-      end
       @scores = []
 
       name = name.downcase.capitalize
@@ -44,7 +41,6 @@ class DeanerySystem
       @id = Digest::MD5.hexdigest(name + surname)
       @first_name = name
       @last_name = surname
-      $db.student_handler.insert self
     end
 
     def scores
@@ -53,9 +49,6 @@ class DeanerySystem
 
     def add_score(grade, options = [])
       score = Score.new(grade.to_f, options[0])
-      unless options[1].nil?
-        $db.score_handler.insert self, score
-      end
       @scores.push(score)
       @scores.sort_by(&:score)
     end
@@ -74,36 +67,12 @@ class DeanerySystem
   end
 
   class FullTimeStudent < Student
-    def initialize(name, surname)
-      @scores = []
-
-      name = name.downcase.capitalize
-      surname = surname.downcase.capitalize
-
-      @id = Digest::MD5.hexdigest(name + surname)
-      @first_name = name
-      @last_name = surname
-      $db.student_handler.insert self
-    end
-
     def get_info
       [@id, @first_name, @last_name, 0]
     end
   end
 
   class ExternalStudent < Student
-    def initialize(name, surname)
-      @scores = []
-
-      name = name.downcase.capitalize
-      surname = surname.downcase.capitalize
-
-      @id = Digest::MD5.hexdigest(name + surname)
-      @first_name = name
-      @last_name = surname
-      $db.student_handler.insert self
-    end
-
     def get_info
       [@id, @first_name, @last_name, 1]
     end

@@ -1,3 +1,3 @@
-module Mygem
+module Deanery
   VERSION = "0.1.0"
 end

@@ -3,7 +3,6 @@ require_relative 'DeanerySystem'
 class Commands
   def initialize
     dean = DeanerySystem.new
-
   end
 
   def insert_student(name, surname, external)

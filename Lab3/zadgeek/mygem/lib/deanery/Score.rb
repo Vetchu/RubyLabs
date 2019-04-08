@@ -31,6 +31,10 @@ class Score
     end
   end
 
+  def get_info
+    [@score, @type]
+  end
+
   def to_s
     @score
   end

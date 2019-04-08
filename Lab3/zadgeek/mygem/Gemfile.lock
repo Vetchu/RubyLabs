@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    mygem (0.0.0)
+    deanery (0.0.0)
 
 GEM
   remote: https://rubygems.org/
@@ -33,7 +33,7 @@ PLATFORMS
 
 DEPENDENCIES
   bundler (~> 2.0)
-  mygem!
+  deanery!
   pry (~> 0.11)
   rake (~> 10.0)
   rspec (~> 3.0)

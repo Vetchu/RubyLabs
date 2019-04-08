@@ -1,12 +1,12 @@
-require_relative "mygem/DeanerySystem.rb"
-require_relative "mygem/SqliteDriver.rb"
-require_relative "mygem/SimpleCommands.rb"
+require_relative "deanery/DeanerySystem.rb"
+require_relative "deanery/SqliteDriver.rb"
+require_relative "deanery/SimpleCommands.rb"
 
-module Mygem
-  $db
-
+module Deanery
 
 end
+
+$db
 
 # @student1 = DeanerySystem::Student.new('JOANNA', 'KOWALSKA')
 # @student2 = DeanerySystem::Student.new('Jerzy', 'Nowak')
@@ -16,6 +16,6 @@ dean = DeanerySystem.new
 #  student1 = DeanerySystem::Student.new('JOANNA', 'KOWALSKA')
 #  student2 = DeanerySystem::Student.new('Jerzy', 'Nowak')
 #
-# sql.student_handler.insert_student student2
+#sql.student_handler.insert student2
 #sql.score_handler.insert student1,Score.new(5.0,2)
-puts sql.student_handler.get_all
+sql.student_handler.get_all

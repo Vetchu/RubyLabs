@@ -2,13 +2,13 @@ lib = File.expand_path("../lib", __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 
 Gem::Specification.new do |spec|
-  spec.name = "mygem"
+  spec.name = "deanery"
   spec.version = '0.0.0'
   spec.authors = ["vetch"]
   spec.email = ["vetch97@gmail.com"]
 
   spec.summary = %q{short desc}
-  spec.description = %q{mygem first relase}
+  spec.description = %q{deanery first relase}
   spec.license = "MIT"
 
 

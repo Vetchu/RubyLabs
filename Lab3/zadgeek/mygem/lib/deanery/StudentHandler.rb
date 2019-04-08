@@ -11,7 +11,6 @@ class Student_Handler
       is_external Integer
     );
     SQL
-
   end
 
   def insert (student)
@@ -24,13 +23,11 @@ class Student_Handler
 
   def update (student, new_student)
     student = student.get_info
-    new_student = new_student.get_info
 
     @db.execute("UPDATE students SET (first_name, last_name, external)
-            VALUES (?, ?, ?) WHERE id=? ", new_student[1], new_student[2], new_student[3], student[0])
+            VALUES (?, ?, ?) WHERE id=? ", [new_student[1], new_student[2], new_student[3], student[0]])
   rescue
-    puts "cannot update student " + +student[0]
-
+    puts "cannot update student " + student[0]
   end
 
   def delete (student)
@@ -41,10 +38,12 @@ class Student_Handler
   end
 
   def get_all
-    @db.execute("SELECT * FROM students").collect {|row|
+    rows = @db.execute("SELECT * FROM students").each {|row|
+      puts row
       (!row[3].nil? && row[3] == 0) ?
           DeanerySystem::FullTimeStudent.new(row[1], row[2]) :
           DeanerySystem::ExternalStudent.new(row[1], row[2])
     }
+    rows
   end
 end
