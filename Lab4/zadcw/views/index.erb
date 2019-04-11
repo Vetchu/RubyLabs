@@ -1,0 +1,13 @@
+<%=
+  arr = ""
+  Dir["public/*"].collect do |image|
+    arr+="<br/>"
+    arr+=File.basename(image).split("_")[0]+" "
+    arr+=File.basename(image).split("_")[1]+"<br/>"
+
+    arr+='<img src="'+File.basename(image)+'"'
+    arr+="/"
+    arr+='>'
+  end
+  arr
+%>

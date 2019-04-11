@@ -56,7 +56,7 @@ class HelloWorld
       <input name="surname">
       <input type="submit">
     </form>
-    <h1>#{p["name"].to_s.upcase} #{p["surname"].to_s.upcase}
+    <h1>#{p["name"].to_s.upcase} #{p["surname"].to_s.upcase}</h1>
   </body>
 </html>) # Umieść, w ciele odpowiedzi, podany dokument HTML
     response.finish # Wyślij odpowiedź

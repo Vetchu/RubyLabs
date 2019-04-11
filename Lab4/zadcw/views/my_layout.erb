@@ -1,0 +1,16 @@
+<html>
+<head>
+  <title>Image Upload</title>
+</head>
+<body>
+<h1>Upload Image</h1>
+
+<form action="http://localhost:4567/" method="POST" enctype="multipart/form-data">
+  <input name="name">
+  <input name="surname">
+  <input type="file" name="file">
+  <input type="submit" value="Upload image">
+</form>
+<%= yield %>
+</body>
+</html>

@@ -27,8 +27,8 @@ class Student_Handler
 
     @db.execute("UPDATE students SET id=?, first_name=?, last_name=?, is_external=?
                  WHERE id=?", new_student, student[0])
-      # rescue
-      #  puts "cannot update student " + student[0] +new_student.to_s
+    # rescue
+    #  puts "cannot update student " + student[0] +new_student.to_s
   end
 
   def delete (student)
@@ -45,6 +45,26 @@ class Student_Handler
           DeanerySystem::FullTimeStudent.new(row[1], row[2]) :
           DeanerySystem::ExternalStudent.new(row[1], row[2])
     }
+    rows
+  end
+
+  def find (name, surname, external)
+    if external == 'any'
+      external = 'any'
+    elsif external == 'fulltime'
+      external = 0;
+    else
+      external = 1;
+    end
+    #puts name.to_s + surname.to_s + external.to_s
+
+    rows = get_all.keep_if {|student|
+      namebool = name == 'any' ? true : student[1] == name
+      surnamebool = surname == 'any' ? true : student[2] == surname
+      externalbool = external == 'any' ? true : student[3] == external
+      namebool && surnamebool && externalbool
+    }
+
     rows
   end
 end

@@ -9,9 +9,13 @@ $db
 class DeanerySystem
   attr_reader :db
 
-  def initialize
+  def initialize(options = [])
     unless $db
-      $db = SQL_Handler.new("test")
+      if options[0].nil?
+        $db = SQL_Handler.new("test")
+      else
+        $db = SQL_Handler.new(options[0])
+      end
     end
   end
 

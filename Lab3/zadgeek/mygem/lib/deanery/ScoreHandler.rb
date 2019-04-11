@@ -8,7 +8,7 @@ class ScoreHandler
       id varchar(50) PRIMARY KEY,
       score Float,
       type Integer,
-      studentid Integer
+      studentid varchar(50)
     );
     SQL
   end
@@ -31,8 +31,8 @@ class ScoreHandler
     grade = grade.get_info
     puts student.to_s
     @db.execute("DELETE FROM grades WHERE score=? AND type=? AND studentid=?;", grade, student[0])
-      #rescue
-      # puts "cannot delete student grade" + student[0]+" " +grade.to_s
+    #rescue
+    # puts "cannot delete student grade" + student[0]+" " +grade.to_s
   end
 
   def delete_all (student)
@@ -43,8 +43,20 @@ class ScoreHandler
 
   def grades(student)
     student = student.get_info
-    @db.execute("SELECT score,type FROM grades WHERE studentid=?", student[0])
-
+    result = @db.execute("SELECT score,type FROM grades WHERE studentid=?", student[0])
+    result.collect do |row|
+      row[0] = row[0]
+      row[1] = if row[1] == 0
+                 "normal"
+               else
+                 if row[1] == 1
+                   "exam"
+                 else
+                   row[1] == 2 ? "end" : nil
+                 end
+               end
+      row
+    end
   end
 
 end

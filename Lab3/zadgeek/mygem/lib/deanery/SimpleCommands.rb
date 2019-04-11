@@ -1,8 +1,10 @@
 require_relative 'DeanerySystem'
 
 class Commands
+  attr_accessor :dean
+  @dean
   def initialize
-    dean = DeanerySystem.new
+    @dean = DeanerySystem.new
   end
 
   def insert_student(name, surname, external)
@@ -37,8 +39,15 @@ class Commands
     $db.score_handler.delete DeanerySystem::Student.new(name, surname), Score.new(score, type)
   end
 
+  def grades(name, surname)
+    $db.score_handler.grades DeanerySystem::Student.new(name, surname)
+  end
+
   def get_all_students
     $db.student_handler.get_all {|student| $db.score_handler.grades(student) {|score| student.add score[1], score[2], "NEW"}}
   end
 
+  def find (name, surname, external)
+    $db.student_handler.find name, surname, external
+  end
 end
