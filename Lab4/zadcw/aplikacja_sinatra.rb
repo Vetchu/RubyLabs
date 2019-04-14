@@ -6,6 +6,7 @@ class Protected < Sinatra::Base
   get '/' do
     erb :index, :layout => :my_layout
   end
+
   post '/' do
     @name = params["name"]
     @surname = params["surname"]
