@@ -45,18 +45,12 @@ class DeaneryApp < Sinatra::Base
   register Sinatra::Namespace
 
   namespace '/student' do
-    # use Rack::Auth::Basic do |username, password|
-    #   username == 'foo' && password == 'bar'
-    # end
 
     get /\/*/ do
       erb :my_grades, :layout => :my_layout
     end
   end
   namespace '/teacher' do
-    # use Rack::Auth::Basic do |username, password|
-    #   username == 'foo' && password == 'bar'
-    # end
 
     get /\/*/ do
       erb :teacher, :layout => :my_layout
